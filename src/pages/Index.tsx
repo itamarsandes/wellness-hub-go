@@ -1,56 +1,70 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import LandingPage from "./LandingPage";
-import LoginForm from "@/components/Auth/LoginForm";
-import RegisterForm from "@/components/Auth/RegisterForm";
 import PatientDashboard from "./PatientDashboard";
 import ProfessionalDashboard from "./ProfessionalDashboard";
 
 const Index = () => {
-  const [currentView, setCurrentView] = useState<"landing" | "login" | "register" | "patient" | "professional">("landing");
-  const [user, setUser] = useState<any>(null);
+  const { user, loading } = useAuth();
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [profileLoading, setProfileLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = (email: string, password: string) => {
-    // Mock login logic
-    const mockUser = { email, type: email.includes("doctor") ? "professional" : "patient" };
-    setUser(mockUser);
-    setCurrentView(mockUser.type === "professional" ? "professional" : "patient");
+  useEffect(() => {
+    if (!loading && !user) {
+      // User not authenticated, stay on landing page
+      return;
+    }
+
+    if (user) {
+      // User authenticated, fetch profile
+      fetchUserProfile();
+    }
+  }, [user, loading]);
+
+  const fetchUserProfile = async () => {
+    if (!user) return;
+    
+    setProfileLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching profile:', error);
+        return;
+      }
+
+      setUserProfile(data);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    } finally {
+      setProfileLoading(false);
+    }
   };
 
-  const handleRegister = (userData: any) => {
-    // Mock registration logic
-    const newUser = { ...userData, email: userData.email };
-    setUser(newUser);
-    setCurrentView(userData.userType === "professional" ? "professional" : "patient");
-  };
-
-  if (currentView === "login") {
+  if (loading || profileLoading) {
     return (
-      <LoginForm
-        onLogin={handleLogin}
-        onRegister={() => setCurrentView("register")}
-        onForgotPassword={() => {}}
-      />
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
     );
   }
 
-  if (currentView === "register") {
-    return (
-      <RegisterForm
-        onRegister={handleRegister}
-        onLogin={() => setCurrentView("login")}
-      />
-    );
+  if (!user) {
+    return <LandingPage onLogin={() => navigate('/auth')} />;
   }
 
-  if (currentView === "patient" && user) {
-    return <PatientDashboard />;
-  }
-
-  if (currentView === "professional" && user) {
+  if (userProfile?.role === 'professional' || userProfile?.role === 'org_admin') {
     return <ProfessionalDashboard />;
   }
 
-  return <LandingPage />;
+  return <PatientDashboard />;
 };
 
 export default Index;

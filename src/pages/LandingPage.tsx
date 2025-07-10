@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import heroImage from "@/assets/hero-healthflow.jpg";
 
-const LandingPage = () => {
+interface LandingPageProps {
+  onLogin: () => void;
+}
+
+const LandingPage = ({ onLogin }: LandingPageProps) => {
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null);
 
   const features = [
@@ -78,8 +82,8 @@ const LandingPage = () => {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" className="hidden md:inline-flex">Login</Button>
-            <Button className="medical-button">Começar Agora</Button>
+            <Button variant="ghost" className="hidden md:inline-flex" onClick={onLogin}>Login</Button>
+            <Button className="medical-button" onClick={onLogin}>Começar Agora</Button>
           </div>
         </div>
       </header>
@@ -98,11 +102,11 @@ const LandingPage = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Button size="lg" className="medical-button group">
+                <Button size="lg" className="medical-button group" onClick={onLogin}>
                   Teste Gratuito por 14 Dias
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
-                <Button size="lg" variant="outline" className="glass-card">
+                <Button size="lg" variant="outline" className="glass-card" onClick={onLogin}>
                   Ver Demonstração
                 </Button>
               </div>
@@ -230,7 +234,7 @@ const LandingPage = () => {
             <p className="text-lg text-muted-foreground mb-8">
               Junte-se a milhares de profissionais que já transformaram sua prática com o ClinicSync.
             </p>
-            <Button size="lg" className="medical-button group">
+            <Button size="lg" className="medical-button group" onClick={onLogin}>
               Começar Teste Gratuito
               <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>

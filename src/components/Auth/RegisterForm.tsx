@@ -1,19 +1,21 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { User, Mail, Lock, Phone, ArrowRight, UserCheck, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 interface RegisterFormProps {
-  onRegister: (userData: any) => void;
   onLogin: () => void;
 }
 
-const RegisterForm = ({ onRegister, onLogin }: RegisterFormProps) => {
+const RegisterForm = ({ onLogin }: RegisterFormProps) => {
   const [step, setStep] = useState(1);
-  const [userType, setUserType] = useState<"patient" | "professional">("patient");
+  const [userType, setUserType] = useState<"client" | "professional">("client");
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -21,20 +23,38 @@ const RegisterForm = ({ onRegister, onLogin }: RegisterFormProps) => {
     password: "",
     confirmPassword: ""
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const { signUp, loading } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (step === 1) {
+      // Validate passwords match
+      if (formData.password !== formData.confirmPassword) {
+        toast({
+          title: "Erro",
+          description: "As senhas não coincidem",
+          variant: "destructive",
+        });
+        return;
+      }
       setStep(2);
       return;
     }
 
-    setIsLoading(true);
-    setTimeout(() => {
-      onRegister({ ...formData, userType });
-      setIsLoading(false);
-    }, 1500);
+    // Step 2 - Create account
+    const { error } = await signUp(
+      formData.email,
+      formData.password,
+      formData.fullName,
+      userType
+    );
+    
+    if (!error) {
+      navigate('/');
+    }
   };
 
   const formatPhone = (value: string) => {
@@ -158,11 +178,11 @@ const RegisterForm = ({ onRegister, onLogin }: RegisterFormProps) => {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                <RadioGroup value={userType} onValueChange={(value: "patient" | "professional") => setUserType(value)}>
+                <RadioGroup value={userType} onValueChange={(value: "client" | "professional") => setUserType(value)}>
                   <div className="space-y-4">
                     <div className="flex items-center space-x-4 p-4 border border-border rounded-lg hover:bg-muted/30 transition-colors cursor-pointer">
-                      <RadioGroupItem value="patient" id="patient" />
-                      <Label htmlFor="patient" className="flex-1 cursor-pointer">
+                      <RadioGroupItem value="client" id="client" />
+                      <Label htmlFor="client" className="flex-1 cursor-pointer">
                         <div className="flex items-center space-x-3">
                           <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                             <User className="w-5 h-5 text-primary" />
@@ -204,9 +224,9 @@ const RegisterForm = ({ onRegister, onLogin }: RegisterFormProps) => {
                   <Button
                     type="submit"
                     className="flex-1 medical-button h-12 group"
-                    disabled={isLoading}
+                    disabled={loading}
                   >
-                    {isLoading ? (
+                    {loading ? (
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     ) : (
                       <>

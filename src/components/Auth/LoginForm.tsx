@@ -1,33 +1,34 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAuth } from "@/hooks/useAuth";
 
 interface LoginFormProps {
-  onLogin: (email: string, password: string) => void;
   onRegister: () => void;
   onForgotPassword: () => void;
 }
 
-const LoginForm = ({ onLogin, onRegister, onForgotPassword }: LoginFormProps) => {
+const LoginForm = ({ onRegister, onForgotPassword }: LoginFormProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { signIn, loading } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      onLogin(email, password);
-      setIsLoading(false);
-    }, 1500);
+    const { error } = await signIn(email, password);
+    
+    if (!error) {
+      navigate('/');
+    }
   };
 
   return (
@@ -105,9 +106,9 @@ const LoginForm = ({ onLogin, onRegister, onForgotPassword }: LoginFormProps) =>
             <Button
               type="submit"
               className="w-full medical-button h-12 group"
-              disabled={isLoading}
+              disabled={loading}
             >
-              {isLoading ? (
+              {loading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
