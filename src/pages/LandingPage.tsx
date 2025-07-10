@@ -34,7 +34,7 @@ const LandingPage = () => {
     {
       name: "Dr. Ana Silva",
       role: "Cardiologista",
-      content: "O HealthFlow revolucionou minha clínica. A produtividade aumentou 40% e os pacientes adoram a praticidade.",
+      content: "O ClinicSync revolucionou minha clínica. A produtividade aumentou 40% e os pacientes adoram a praticidade.",
       rating: 5
     },
     {
@@ -46,7 +46,7 @@ const LandingPage = () => {
     {
       name: "Dr. Ricardo Santos",
       role: "Psicólogo",
-      content: "Impressionante como o HealthFlow simplificou nossa rotina. Recomendo para todos os colegas.",
+      content: "Impressionante como o ClinicSync simplificou nossa rotina. Recomendo para todos os colegas.",
       rating: 5
     }
   ];
@@ -67,7 +67,7 @@ const LandingPage = () => {
             <div className="w-8 h-8 medical-gradient rounded-lg flex items-center justify-center">
               <Heart className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gradient">HealthFlow</span>
+            <span className="text-xl font-bold text-gradient">ClinicSync</span>
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">
@@ -123,7 +123,7 @@ const LandingPage = () => {
               <div className="relative">
                 <img 
                   src={heroImage} 
-                  alt="HealthFlow Platform" 
+                  alt="ClinicSync Platform" 
                   className="w-full rounded-2xl shadow-large float-animation"
                 />
                 <div className="absolute -bottom-6 -left-6 glass-card p-4 w-48">
@@ -228,7 +228,7 @@ const LandingPage = () => {
               Pronto para <span className="text-gradient">revolucionar</span> sua clínica?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Junte-se a milhares de profissionais que já transformaram sua prática com o HealthFlow.
+              Junte-se a milhares de profissionais que já transformaram sua prática com o ClinicSync.
             </p>
             <Button size="lg" className="medical-button group">
               Começar Teste Gratuito
@@ -247,7 +247,7 @@ const LandingPage = () => {
                 <div className="w-8 h-8 medical-gradient rounded-lg flex items-center justify-center">
                   <Heart className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold text-gradient">HealthFlow</span>
+                <span className="text-xl font-bold text-gradient">ClinicSync</span>
               </div>
               <p className="text-muted-foreground">
                 Transformando o futuro da saúde digital com tecnologia e cuidado humano.
@@ -283,7 +283,7 @@ const LandingPage = () => {
           </div>
 
           <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 HealthFlow. Todos os direitos reservados.</p>
+            <p>&copy; 2024 ClinicSync. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>

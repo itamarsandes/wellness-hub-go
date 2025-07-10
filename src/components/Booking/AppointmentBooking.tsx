@@ -306,7 +306,7 @@ const AppointmentBooking = ({ onClose, onConfirm }: AppointmentBookingProps) => 
                     <MapPin className="w-5 h-5 text-primary" />
                     <div>
                       <p className="font-medium text-foreground">Sala 301</p>
-                      <p className="text-sm text-muted-foreground">Clínica HealthFlow</p>
+                      <p className="text-sm text-muted-foreground">Clínica ClinicSync</p>
                     </div>
                   </div>
 

@@ -38,7 +38,7 @@ const LoginForm = ({ onLogin, onRegister, onForgotPassword }: LoginFormProps) =>
             <div className="w-16 h-16 medical-gradient rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Mail className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-foreground mb-2">Bem-vindo ao HealthFlow</h1>
+            <h1 className="text-2xl font-bold text-foreground mb-2">Bem-vindo ao ClinicSync</h1>
             <p className="text-muted-foreground">Entre em sua conta para continuar</p>
           </div>
 
