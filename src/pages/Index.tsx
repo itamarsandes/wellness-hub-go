@@ -1,14 +1,56 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import LandingPage from "./LandingPage";
+import LoginForm from "@/components/Auth/LoginForm";
+import RegisterForm from "@/components/Auth/RegisterForm";
+import PatientDashboard from "./PatientDashboard";
+import ProfessionalDashboard from "./ProfessionalDashboard";
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [currentView, setCurrentView] = useState<"landing" | "login" | "register" | "patient" | "professional">("landing");
+  const [user, setUser] = useState<any>(null);
+
+  const handleLogin = (email: string, password: string) => {
+    // Mock login logic
+    const mockUser = { email, type: email.includes("doctor") ? "professional" : "patient" };
+    setUser(mockUser);
+    setCurrentView(mockUser.type === "professional" ? "professional" : "patient");
+  };
+
+  const handleRegister = (userData: any) => {
+    // Mock registration logic
+    const newUser = { ...userData, email: userData.email };
+    setUser(newUser);
+    setCurrentView(userData.userType === "professional" ? "professional" : "patient");
+  };
+
+  if (currentView === "login") {
+    return (
+      <LoginForm
+        onLogin={handleLogin}
+        onRegister={() => setCurrentView("register")}
+        onForgotPassword={() => {}}
+      />
+    );
+  }
+
+  if (currentView === "register") {
+    return (
+      <RegisterForm
+        onRegister={handleRegister}
+        onLogin={() => setCurrentView("login")}
+      />
+    );
+  }
+
+  if (currentView === "patient" && user) {
+    return <PatientDashboard />;
+  }
+
+  if (currentView === "professional" && user) {
+    return <ProfessionalDashboard />;
+  }
+
+  return <LandingPage />;
 };
 
 export default Index;

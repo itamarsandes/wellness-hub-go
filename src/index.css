@@ -2,41 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* HealthFlow Design System - Medical & Health Theme */
 
 @layer base {
   :root {
+    /* Core Brand Colors */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 210 40% 8%;
 
+    /* Medical Blue Primary Palette */
+    --primary: 210 100% 50%;
+    --primary-light: 210 100% 60%;
+    --primary-dark: 210 100% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Health Green Secondary Palette */
+    --secondary: 140 60% 50%;
+    --secondary-light: 140 60% 60%;
+    --secondary-dark: 140 60% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Trust & Professional Colors */
+    --accent: 200 70% 50%;
+    --accent-light: 200 70% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Neutral System */
+    --muted: 210 40% 98%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 8%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
+    /* Status Colors */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
+    /* Interactive Elements */
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 210 100% 50%;
 
-    --radius: 0.5rem;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-light)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
+
+    /* Shadows */
+    --shadow-soft: 0 2px 8px -2px hsl(var(--primary) / 0.1);
+    --shadow-medium: 0 8px 25px -5px hsl(var(--primary) / 0.15);
+    --shadow-large: 0 25px 50px -12px hsl(var(--primary) / 0.25);
+    --shadow-glow: 0 0 0 1px hsl(var(--primary) / 0.1), 0 0 40px hsl(var(--primary) / 0.2);
+
+    /* Borders & Radius */
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +136,164 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer components {
+  /* Medical & Health Components */
+  .medical-gradient {
+    background: var(--gradient-primary);
+  }
+  
+  .health-gradient {
+    background: var(--gradient-secondary);
+  }
+  
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+  
+  .card-gradient {
+    background: var(--gradient-card);
+  }
+
+  /* Shadow System */
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-medical {
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .shadow-large {
+    box-shadow: var(--shadow-large);
+  }
+  
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Interactive Elements */
+  .medical-button {
+    @apply bg-primary hover:bg-primary-light text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-medical hover:shadow-glow;
+  }
+  
+  .health-button {
+    @apply bg-secondary hover:bg-secondary-light text-secondary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-medical;
+  }
+  
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50 rounded-xl shadow-medical;
+  }
+  
+  .medical-card {
+    @apply bg-card border border-border rounded-xl p-6 shadow-soft hover:shadow-medical transition-all duration-300 hover:scale-[1.02];
+  }
+
+  /* Status Indicators */
+  .status-success {
+    @apply bg-success text-success-foreground;
+  }
+  
+  .status-warning {
+    @apply bg-warning text-warning-foreground;
+  }
+  
+  .status-error {
+    @apply bg-destructive text-destructive-foreground;
+  }
+
+  /* Text Styles */
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Loading & Animations */
+  .pulse-medical {
+    animation: pulse-medical 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+  }
+  
+  .slide-in-right {
+    animation: slide-in-right 0.5s ease-out forwards;
+  }
+}
+
+@layer utilities {
+  /* Custom Animations */
+  @keyframes pulse-medical {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes medical-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px hsl(var(--primary) / 0.6);
+    }
+  }
+
+  /* Responsive Text */
+  .text-responsive-lg {
+    @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
+  }
+  
+  .text-responsive-md {
+    @apply text-lg md:text-xl lg:text-2xl;
+  }
+  
+  .text-responsive-sm {
+    @apply text-base md:text-lg;
   }
 }
